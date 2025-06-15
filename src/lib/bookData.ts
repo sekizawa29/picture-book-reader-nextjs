@@ -3,13 +3,20 @@ import { BookMetadata, ReadingProgress } from './types'
 export class BookDataManager {
   private books: BookMetadata[] = []
   private readonly booksPath = process.env.NODE_ENV === 'production' ? '/picture-book-reader-nextjs/books/' : '/books/'
+  private isInitialized = false
 
   async init(): Promise<void> {
-    await this.loadBooksData()
+    if (!this.isInitialized) {
+      await this.loadBooksData()
+      this.isInitialized = true
+    }
   }
 
   private async loadBooksData(): Promise<void> {
     try {
+      // 既存データをクリア（重複防止）
+      this.books = []
+      
       // 書籍リストの定義
       const bookIds = ['book1', 'book2']
       
@@ -17,10 +24,14 @@ export class BookDataManager {
         try {
           const metadata = await this.loadBookMetadata(bookId)
           if (metadata) {
-            this.books.push({
-              ...metadata,
-              path: `${this.booksPath}${bookId}/`
-            } as BookMetadata & { path: string })
+            // 重複チェック
+            const exists = this.books.find(book => book.id === metadata.id)
+            if (!exists) {
+              this.books.push({
+                ...metadata,
+                path: `${this.booksPath}${bookId}/`
+              } as BookMetadata & { path: string })
+            }
           }
         } catch (error) {
           console.warn(`書籍 ${bookId} の読み込みに失敗:`, error)
@@ -119,15 +130,17 @@ export class BookDataManager {
     if (typeof window === 'undefined') return []
     
     const recentBooks: (BookMetadata & { lastRead: Date; progress: ReadingProgress })[] = []
+    const addedBookIds = new Set<string>()
     
     for (const book of this.books) {
       const progress = this.getReadingProgress(book.id)
-      if (progress) {
+      if (progress && !addedBookIds.has(book.id)) {
         recentBooks.push({
           ...book,
           lastRead: new Date(progress.lastRead),
           progress: progress
         })
+        addedBookIds.add(book.id)
       }
     }
     

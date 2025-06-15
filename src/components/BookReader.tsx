@@ -28,6 +28,15 @@ export default function BookReader({ bookId }: BookReaderProps) {
   const leftImageRef = useRef<HTMLImageElement>(null)
   const rightImageRef = useRef<HTMLImageElement>(null)
 
+  // リーダーページ用のレイアウト設定
+  useEffect(() => {
+    document.body.className = 'reader-page'
+    
+    return () => {
+      document.body.className = 'library-page'
+    }
+  }, [])
+
   // 画像サイズ計算
   const calculateOptimalSizes = useCallback(() => {
     if (!aspectRatio || !viewportInfo.usableWidth || !viewportInfo.usableHeight) {

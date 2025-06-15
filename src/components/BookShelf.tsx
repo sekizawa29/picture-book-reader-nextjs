@@ -56,7 +56,7 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
 
   if (isLoading) {
     return (
-      <div className="fullscreen-container safe-area flex items-center justify-center">
+      <div className="library-container safe-area flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">書籍を読み込み中...</p>
@@ -66,7 +66,7 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
   }
 
   return (
-    <div className="fullscreen-container safe-area bg-gradient-to-br from-orange-50 to-orange-100">
+    <div className="library-container safe-area bg-gradient-to-br from-orange-50 to-orange-100">
       {/* ヘッダー */}
       <header className="bg-gradient-to-r from-orange-500 to-orange-600 text-white sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
@@ -85,10 +85,10 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="library-scroll-area">
         {/* 検索セクション */}
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="bg-white rounded-2xl shadow-lg p-4 mb-6">
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
             {/* 検索バー */}
             <div className="mb-4">
               <div className="relative">
@@ -123,34 +123,41 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
 
           {/* 最近読んだ本 */}
           {recentBooks.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <span>⏰</span>
+            <div className="mb-8">
+              <h2 className="text-xl font-bold mb-4 flex items-center gap-3 text-gray-800">
+                <span className="text-2xl">⏰</span>
                 最近読んだ本
               </h2>
-              <div className="flex gap-3 overflow-x-auto pb-2">
+              <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth">
                 {recentBooks.map((book) => (
                   <motion.div
-                    key={book.id}
+                    key={`recent-${book.id}`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex-shrink-0"
                   >
                     <Link href={`/book/${book.id}`}>
-                      <div className="bg-white rounded-xl shadow-md overflow-hidden w-24 cursor-pointer">
+                      <div className="bg-white rounded-xl shadow-lg overflow-hidden w-32 cursor-pointer hover:shadow-xl transition-shadow duration-300">
                         <div className="aspect-[3/4] relative">
                           <Image
                             src={getBookDataManager().getThumbnailUrl(book)}
                             alt={book.title}
                             fill
                             className="object-cover"
-                            sizes="96px"
+                            sizes="128px"
                           />
+                          {/* 読書進捗バッジ */}
+                          <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                            {book.progress.completed ? '完読' : `${Math.round((book.progress.currentSpread / book.progress.totalSpreads) * 100)}%`}
+                          </div>
                         </div>
-                        <div className="p-2">
-                          <h3 className="text-xs font-medium text-gray-800 line-clamp-2">
+                        <div className="p-3">
+                          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-1">
                             {book.title}
                           </h3>
+                          <p className="text-xs text-gray-500">
+                            {new Date(book.lastRead).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })}
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -161,46 +168,58 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
           )}
 
           {/* 書籍グリッド */}
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              <span>📚</span>
+          <div className="mb-12">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+              <span className="text-2xl">📚</span>
               すべての本
+              <span className="ml-2 bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full font-medium">
+                {filteredBooks.length}冊
+              </span>
             </h2>
             
             {filteredBooks.length === 0 ? (
-              <div className="text-center py-12">
-                <span className="text-4xl mb-4 block">📖</span>
-                <h3 className="text-lg font-medium text-gray-800 mb-2">本が見つかりません</h3>
-                <p className="text-gray-600">検索条件を変更してみてください</p>
+              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+                <span className="text-6xl mb-6 block">📖</span>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">本が見つかりません</h3>
+                <p className="text-gray-600 mb-4">検索条件を変更してみてください</p>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  >
+                    検索をクリア
+                  </button>
+                )}
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {filteredBooks.map((book) => (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
+                {filteredBooks.map((book, index) => (
                   <motion.div
-                    key={book.id}
+                    key={`book-${book.id}-${index}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     className="gpu-accelerated"
                   >
                     <Link href={`/book/${book.id}`}>
-                      <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer touch-optimized">
+                      <div className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer touch-optimized hover:shadow-xl transition-all duration-300 border border-gray-100">
                         <div className="aspect-[3/4] relative">
                           <Image
                             src={getBookDataManager().getThumbnailUrl(book)}
                             alt={book.title}
                             fill
                             className="object-cover"
-                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, (max-width: 1536px) 16vw, 12vw"
                           />
                           {/* 読書進捗表示 */}
                           {(() => {
                             const progress = getBookDataManager().getReadingProgress(book.id)
                             if (progress) {
                               return (
-                                <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-                                  progress.completed ? 'bg-green-500 text-white' : 'bg-black bg-opacity-50 text-white'
+                                <div className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold shadow-lg ${
+                                  progress.completed ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'
                                 }`}>
                                   {progress.completed ? '完読' : `${Math.round((progress.currentSpread / progress.totalSpreads) * 100)}%`}
                                 </div>
@@ -209,17 +228,17 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
                             return null
                           })()}
                         </div>
-                        <div className="p-3">
-                          <h3 className="font-medium text-gray-800 text-sm line-clamp-2 mb-1">
+                        <div className="p-4">
+                          <h3 className="font-bold text-gray-800 text-sm line-clamp-2 mb-2 leading-tight">
                             {book.title}
                           </h3>
-                          <p className="text-xs text-gray-600 mb-2">{book.author}</p>
+                          <p className="text-xs text-gray-600 mb-3 font-medium">{book.author}</p>
                           <div className="flex justify-between items-center text-xs text-gray-500">
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded-full">
                               <span>📄</span>
                               {book.totalPages}p
                             </span>
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded-full">
                               <span>⏱️</span>
                               {book.readingTime}
                             </span>

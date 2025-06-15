@@ -42,7 +42,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <link rel="apple-touch-icon" href={`${basePath}/icon-192.png`} />
       </head>
-      <body>
+      <body className="library-page">
         {children}
       </body>
     </html>
