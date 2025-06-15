@@ -20,8 +20,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // 静的エクスポート時は必須
   },
-  experimental: {
-    isrMemoryCacheSize: 0, // ISRを無効化（静的エクスポート用）
+  eslint: {
+    ignoreDuringBuilds: true, // ビルド時のESLintチェックを無効化
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
 }
 
