@@ -2,7 +2,7 @@ import { BookMetadata, ReadingProgress } from './types'
 
 export class BookDataManager {
   private books: BookMetadata[] = []
-  private readonly booksPath = '/books/'
+  private readonly booksPath = process.env.NODE_ENV === 'production' ? '/picture-book-reader-nextjs/books/' : '/books/'
 
   async init(): Promise<void> {
     await this.loadBooksData()

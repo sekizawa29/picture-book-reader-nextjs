@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const basePath = process.env.NODE_ENV === 'production' ? '/picture-book-reader-nextjs' : '';
+
 export const metadata: Metadata = {
   title: "📚 絵本リーダー",
   description: "子どもと一緒に絵本を楽しむモバイル最適化リーダー",
-  manifest: "/manifest.json",
+  manifest: `${basePath}/manifest.json`,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    apple: "/icon-192.png",
+    apple: `${basePath}/icon-192.png`,
   },
 };
 
@@ -38,7 +40,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="apple-touch-icon" href={`${basePath}/icon-192.png`} />
       </head>
       <body>
         {children}

@@ -16,8 +16,12 @@ const nextConfig: NextConfig = {
   trailingSlash: true, // GitHub Pages対応
   basePath: process.env.NODE_ENV === 'production' ? '/picture-book-reader-nextjs' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/picture-book-reader-nextjs/' : '',
+  distDir: 'out',
   images: {
     unoptimized: true, // 静的エクスポート時は必須
+  },
+  experimental: {
+    isrMemoryCacheSize: 0, // ISRを無効化（静的エクスポート用）
   },
 }
 
