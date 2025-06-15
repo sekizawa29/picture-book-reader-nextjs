@@ -38,4 +38,4 @@ export default {
     },
   },
   plugins: [],
-} as Config;
+} satisfies Config;
