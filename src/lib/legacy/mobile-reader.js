@@ -95,7 +95,7 @@ class MobileBookReader {
     optimizeImageDisplay(viewportDetail) {
         if (!this.pageSpread) return;
         
-        const { safeHeight, safeWidth, orientation, spreadOptimization } = viewportDetail;
+        const { spreadOptimization } = viewportDetail;
         
         // 動的スタイル適用
         this.pageSpread.style.maxWidth = `${spreadOptimization.maxWidth * 2 + 10}px`;
@@ -586,7 +586,7 @@ class MobileBookReader {
     }
     
     // ジェスチャー処理
-    handleSwipe(direction, data) {
+    handleSwipe(direction, _data) {
         switch (direction) {
             case 'left':
                 this.nextPage();

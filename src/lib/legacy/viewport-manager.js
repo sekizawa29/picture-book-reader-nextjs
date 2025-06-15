@@ -69,8 +69,6 @@ class ViewportManager {
         // 実際の表示可能領域を計算
         const windowHeight = window.innerHeight;
         const windowWidth = window.innerWidth;
-        const screenHeight = screen.height;
-        const screenWidth = screen.width;
         
         // 100vhの実際の値を計算（ブラウザUIを除外）
         const actualVh = windowHeight * 0.01;
@@ -184,7 +182,6 @@ class ViewportManager {
         const userAgent = navigator.userAgent;
         const isIOS = /iPad|iPhone|iPod/.test(userAgent);
         const isAndroid = /Android/.test(userAgent);
-        const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
         
         // デバイス別の表示調整
         if (isIOS) {

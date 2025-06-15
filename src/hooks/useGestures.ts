@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useRef, useState } from 'react'
-import { GestureInfo } from '@/lib/types'
 
 interface UseGesturesProps {
   onSwipeLeft?: () => void

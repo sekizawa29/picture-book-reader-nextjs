@@ -236,15 +236,23 @@ export default function BookReader({ bookId }: BookReaderProps) {
           <motion.div
             key={currentSpread}
             custom={direction}
-            initial={(direction) => ({
-              x: direction === 'left' ? '100%' : direction === 'right' ? '-100%' : 0,
-              opacity: 0
-            })}
-            animate={{ x: 0, opacity: 1 }}
-            exit={(direction) => ({
-              x: direction === 'left' ? '-100%' : direction === 'right' ? '100%' : 0,
-              opacity: 0
-            })}
+            variants={{
+              enter: (direction: string | null) => ({
+                x: direction === 'left' ? '100%' : direction === 'right' ? '-100%' : 0,
+                opacity: 0
+              }),
+              center: {
+                x: 0,
+                opacity: 1
+              },
+              exit: (direction: string | null) => ({
+                x: direction === 'left' ? '-100%' : direction === 'right' ? '100%' : 0,
+                opacity: 0
+              })
+            }}
+            initial="enter"
+            animate="center"
+            exit="exit"
             transition={{
               type: "spring",
               stiffness: 300,

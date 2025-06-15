@@ -249,6 +249,7 @@ class PWAManager {
 }
 
 // サービスワーカーファイルの内容を生成
+// eslint-disable-next-line no-unused-vars
 function generateServiceWorker() {
     const swContent = `
 // Service Worker for Book Reader PWA

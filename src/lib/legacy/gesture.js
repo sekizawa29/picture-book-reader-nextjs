@@ -218,6 +218,7 @@ class GestureHandler {
 }
 
 // ハンマー.js風の軽量ジェスチャー認識
+// eslint-disable-next-line no-unused-vars
 class SimpleGestures {
     static createSwipeHandler(element, onSwipe) {
         return new GestureHandler(element, {

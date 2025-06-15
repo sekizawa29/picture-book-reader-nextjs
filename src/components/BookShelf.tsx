@@ -11,9 +11,9 @@ interface BookShelfProps {
   onBookSelect?: (bookId: string) => void
 }
 
-export default function BookShelf({ onBookSelect }: BookShelfProps) {
+export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProps) {
   const [books, setBooks] = useState<BookMetadata[]>([])
-  const [recentBooks, setRecentBooks] = useState<any[]>([])
+  const [recentBooks, setRecentBooks] = useState<(BookMetadata & { lastRead: Date; progress: import('@/lib/types').ReadingProgress })[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
