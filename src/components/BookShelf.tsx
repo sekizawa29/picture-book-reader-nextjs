@@ -87,8 +87,8 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
 
       <div className="library-scroll-area">
         {/* 検索セクション */}
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+        <div className="max-w-7xl mx-auto px-8 py-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 mb-10">
             {/* 検索バー */}
             <div className="mb-4">
               <div className="relative">
@@ -123,12 +123,12 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
 
           {/* 最近読んだ本 */}
           {recentBooks.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl font-bold mb-4 flex items-center gap-3 text-gray-800">
+            <div className="mb-10">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-3 text-gray-800">
                 <span className="text-2xl">⏰</span>
                 最近読んだ本
               </h2>
-              <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth">
+              <div className="flex gap-6 overflow-x-auto pb-6 scroll-smooth px-2">
                 {recentBooks.map((book) => (
                   <motion.div
                     key={`recent-${book.id}`}
@@ -168,8 +168,8 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
           )}
 
           {/* 書籍グリッド */}
-          <div className="mb-12">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+          <div className="mb-16">
+            <h2 className="text-xl font-bold mb-8 flex items-center gap-3 text-gray-800">
               <span className="text-2xl">📚</span>
               すべての本
               <span className="ml-2 bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full font-medium">
@@ -192,7 +192,7 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 px-2">
                 {filteredBooks.map((book, index) => (
                   <motion.div
                     key={`book-${book.id}-${index}`}
@@ -204,7 +204,7 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
                     className="gpu-accelerated"
                   >
                     <Link href={`/book/${book.id}`}>
-                      <div className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer touch-optimized hover:shadow-xl transition-all duration-300 border border-gray-100">
+                      <div className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer touch-optimized hover:shadow-xl transition-all duration-300 border border-gray-100 mx-auto max-w-[180px]">
                         <div className="aspect-[3/4] relative">
                           <Image
                             src={getBookDataManager().getThumbnailUrl(book)}
@@ -228,12 +228,12 @@ export default function BookShelf({ onBookSelect: _onBookSelect }: BookShelfProp
                             return null
                           })()}
                         </div>
-                        <div className="p-4">
-                          <h3 className="font-bold text-gray-800 text-sm line-clamp-2 mb-2 leading-tight">
+                        <div className="p-5">
+                          <h3 className="font-bold text-gray-800 text-sm line-clamp-2 mb-2 leading-tight text-center">
                             {book.title}
                           </h3>
-                          <p className="text-xs text-gray-600 mb-3 font-medium">{book.author}</p>
-                          <div className="flex justify-between items-center text-xs text-gray-500">
+                          <p className="text-xs text-gray-600 mb-3 font-medium text-center">{book.author}</p>
+                          <div className="flex justify-center gap-3 text-xs text-gray-500">
                             <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded-full">
                               <span>📄</span>
                               {book.totalPages}p

@@ -66,6 +66,21 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 
+/* モバイル用の余白調整 */
+@media (max-width: 640px) {
+  .library-container .max-w-7xl {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .library-container .max-w-7xl {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+}
+
 /* Safe Area 対応 */
 .safe-area {
   padding-top: env(safe-area-inset-top);
